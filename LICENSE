@@ -1,0 +1,33 @@
+Vibeforge — Source-Available License
+Copyright (c) 2026 mvlvgasy. All rights reserved.
+
+The source code in this repository is made publicly visible for the
+purposes of reference, evaluation, and transparency.
+
+THIS IS NOT OPEN-SOURCE SOFTWARE.
+
+No license or right is granted to use, copy, modify, execute, run,
+distribute, sublicense, or create derivative works of this software,
+in whole or in part, except by explicit prior written permission from
+the copyright holder (mvlvgasy).
+
+You MAY:
+  - View and read the source code in this repository.
+
+You MAY NOT, without prior written permission from the author:
+  - Use, install, or run the software (including as a Claude Code plugin).
+  - Copy, modify, or create derivative works.
+  - Redistribute, publish, or sublicense it, in whole or in part.
+  - Use it for any commercial or non-commercial purpose.
+
+To request permission to use Vibeforge, contact the author via
+https://github.com/mvlvgasy. Permission, when granted, applies only to
+the specific person or entity and scope expressly authorized in writing.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.

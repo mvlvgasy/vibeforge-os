@@ -1,0 +1,18 @@
+{
+  "name": "vibeforge-marketplace",
+  "owner": {
+    "name": "mvlvgasy"
+  },
+  "plugins": [
+    {
+      "name": "vibeforge",
+      "description": "Vibeforge — a Claude Code governance methodology: multi-agent orchestration, discovery-driven lab scaffolding, and organic capitalization across projects.",
+      "version": "0.1.0",
+      "source": "./plugin",
+      "author": {
+        "name": "mvlvgasy"
+      },
+      "homepage": "https://github.com/mvlvgasy/vibeforge-os"
+    }
+  ]
+}

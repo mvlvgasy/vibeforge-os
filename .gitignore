@@ -1,0 +1,19 @@
+# Secrets / credentials — never commit
+.env
+.env.local
+*.key
+credentials/
+
+# Node
+node_modules/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local Claude session artifacts
+.claude/settings.local.json
+
+# Internal working notes (never published)
+BUILDPLAN.md
