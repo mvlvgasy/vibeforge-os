@@ -1,4 +1,8 @@
-# scripts/new-lab-standalone.ps1  (v1.1)
+# scripts/new-lab-standalone.ps1  (v1.2)
+#
+# v1.2 (2026-07-14, vibeforge-os v0.3): writes _method/manifest.json at generation
+# (sha256 of every vendored file, via build-manifest.ps1) -> drift detection
+# (check-drift.ps1) and journaled upgrades (upgrade-lab.ps1 + migrations/).
 # Generates a STANDALONE lab: frozen method embedded + FULL GOVERNANCE, zero external
 # dependency (no plugin, no sibling clone). Doctrine frame 16.
 #
@@ -97,7 +101,7 @@ $variables = @{
     "{{VIBEFORGE_PATH}}" = "_method"
 }
 
-Write-Host "=== /new-lab-standalone v1.1 : generating '$labName' (category: $Category) ===" -ForegroundColor Cyan
+Write-Host "=== /new-lab-standalone v1.2 : generating '$labName' (category: $Category) ===" -ForegroundColor Cyan
 Write-Host "    Socle : $socleRoot ($socleCommit)" -ForegroundColor Cyan
 Write-Host ""
 
@@ -148,7 +152,7 @@ foreach ($d in $SOCLE_DIRS) {
 $methodReadme = @"
 # _method/ - FROZEN governance socle
 
-Copy of the public vibeforge-os method, vendored on $today by new-lab-standalone.ps1 v1.1.
+Copy of the public vibeforge-os method, vendored on $today by new-lab-standalone.ps1 v1.2.
 
 This lab is STANDALONE (doctrine frame 16): no external dependency. Agents live in
 .claude/agents/, skills in .claude/skills/, hooks in .claude/hooks/. The lab's LIVING
@@ -162,7 +166,7 @@ $versionContent = @"
 socle_source: $socleId
 socle_commit: $socleCommit
 vendored_on: $today
-generator: new-lab-standalone.ps1 v1.1 (vibeforge-os)
+generator: new-lab-standalone.ps1 v1.2 (vibeforge-os)
 "@
 [System.IO.File]::WriteAllText((Join-Path $methodPath "VERSION"), $versionContent, $utf8NoBom)
 
@@ -305,7 +309,7 @@ $methodTxt = @"
 # Method this lab depends on.
 # First non-commented line = active value, read by the bootstrap.
 #
-# STATE $today : lab generated STANDALONE by new-lab-standalone.ps1 v1.1 (doctrine frame 16).
+# STATE $today : lab generated STANDALONE by new-lab-standalone.ps1 v1.2 (doctrine frame 16).
 # Frozen method in _method/ (socle $socleCommit) + FULL governance vendored: all agents
 # (.claude/agents/), all skills (.claude/skills/), lifecycle hooks (.claude/hooks/ +
 # settings.json), seeded living registers. No external dependency.
@@ -378,6 +382,11 @@ Write-Host "CATALOG regenerated: $(Join-Path $LabPath 'registres\CATALOG.md')"
 [System.IO.File]::WriteAllText((Join-Path $toolsDir "rebuild-catalog.ps1"), $rebuildScript, $utf8NoBom)
 powershell.exe -ExecutionPolicy Bypass -File (Join-Path $toolsDir "rebuild-catalog.ps1") -LabPath $labPath | Out-Null
 
+# Install manifest: sha256 baseline of every vendored file (drift detection + upgrades, v0.3)
+Write-Host "[8bis] Writing install manifest (_method/manifest.json)..." -ForegroundColor Green
+& powershell.exe -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot "build-manifest.ps1") -LabPath $labPath -SocleCommit $socleCommit
+if ($LASTEXITCODE -ne 0) { Write-Warning "build-manifest.ps1 failed - lab generated WITHOUT manifest (drift detection unavailable)." }
+
 # === Step 9/9: verification + git ===
 Write-Host "[9/9] Dependency-free + governance verification..." -ForegroundColor Green
 $violations = @()
@@ -403,6 +412,7 @@ $govChecks = @{
     "hooks + settings.json"   = (Test-Path (Join-Path $labPath ".claude\settings.json")) -and ((Get-ChildItem (Join-Path $labPath ".claude\hooks") -Filter *.ps1 -ErrorAction SilentlyContinue).Count -gt 0)
     "seeded registres/rules.md" = Test-Path (Join-Path $labPath "registres\rules.md")
     "real CATALOG"            = Test-Path (Join-Path $labPath "registres\CATALOG.md")
+    "install manifest"        = Test-Path (Join-Path $labPath "_method\manifest.json")
 }
 $govFail = $false
 foreach ($k in $govChecks.Keys | Sort-Object) {
@@ -415,14 +425,14 @@ if ($GitInit) {
     try {
         git init | Out-Null
         git add . | Out-Null
-        git commit -m "feat: bootstrap standalone lab $labName (socle vibeforge-os $socleCommit, full governance v1.1)" | Out-Null
+        git commit -m "feat: bootstrap standalone lab $labName (socle vibeforge-os $socleCommit, full governance v1.2)" | Out-Null
         Write-Host "  Git initialized + first commit OK" -ForegroundColor Green
     } catch { Write-Warning "Git error: $_" } finally { Pop-Location }
 }
 
 Write-Host ""
 Write-Host "OK  STANDALONE lab '$labName' created at: $labPath" -ForegroundColor Cyan
-Write-Host "    Socle : $socleId @ $socleCommit - FULL governance embedded (v1.1)" -ForegroundColor Cyan
+Write-Host "    Socle : $socleId @ $socleCommit - FULL governance embedded (v1.2)" -ForegroundColor Cyan
 Write-Host "    No plugin required - plain Claude Code." -ForegroundColor Cyan
 if ($govFail) { Write-Warning "At least one governance element is MISS - check the socle source." }
 Write-Host ""

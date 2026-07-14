@@ -1,6 +1,6 @@
 {
   "name": "vibeforge",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Vibeforge — a generator of autonomous, self-governed Claude Code labs. One interview stamps a STANDALONE lab embedding a frozen copy of the method (16-frame doctrine, armed agents, skills) - zero dependency after generation. OAuth-based (no API key required).",
   "author": {
     "name": "mvlvgasy",

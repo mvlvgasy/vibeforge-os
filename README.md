@@ -9,7 +9,7 @@ memory registers, and an embedded frozen copy of the whole governance method. Th
 lab runs on **plain Claude Code**: no plugin, no dependency on this repo, nothing to install
 on the machine that uses it. Hand the folder to anyone.
 
-[![Version](https://img.shields.io/badge/version-0.2.0-2563eb)](./plugin/.claude-plugin/plugin.json)
+[![Version](https://img.shields.io/badge/version-0.3.0-2563eb)](./plugin/.claude-plugin/plugin.json)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-d97757)](https://docs.claude.com/en/docs/claude-code)
 [![Doctrine](https://img.shields.io/badge/doctrine-16%20frameworks-16a34a)](#-the-doctrine)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%2F%20PowerShell-5b8def)](#-platform)
@@ -36,14 +36,20 @@ socle + vendored agents + skills). From that point on, the lab is self-sufficien
   is logged into. No `ANTHROPIC_API_KEY`.
 - **Each lab learns locally** — a full capitalization loop ships inside the lab (decisions,
   learnings, journal, evals). Your lab's experience stays yours; nothing syncs back.
-- **Upgradeable socle** — each lab records its method version (`_method/VERSION`). When the
-  method improves, regenerate `_method/` without touching the lab's custom layer.
+- **Upgradeable socle (v0.3: full lifecycle)** — at generation, every vendored file is
+  hashed into `_method/manifest.json`. From there: `check-drift.ps1` tells pristine from
+  customized, and `upgrade-lab.ps1` applies journaled migrations (`migrations/`) DB-style —
+  idempotent, backed up, rollback-able — **never overwriting a customized file** (conflicts
+  are reported for human arbitration). Labs generated before v0.3: one-time
+  `build-manifest.ps1 -Baseline`. See [`migrations/README.md`](./migrations/README.md).
+  _Not in scope (v0.4 candidates): marketplace, inter-module dependency resolution — the
+  socle stays monolithic._
 
 ---
 
 ## 🚀 Install
 
-> ⚠️ **Pre-release (v0.1.0).** Active build. The doctrine and agents are stable; tooling and
+> ⚠️ **Pre-release (v0.3.0).** Active build. The doctrine and agents are stable; tooling and
 > packaging are still maturing.
 > Source-available: running the plugin requires written permission — see [License](#-license).
 
