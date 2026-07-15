@@ -1,4 +1,9 @@
-# scripts/new-lab-standalone.ps1  (v1.2)
+# scripts/new-lab-standalone.ps1  (v1.3)
+#
+# v1.3 (2026-07-15, vibeforge-os v0.4): modular generation. -Modules "cadrage,contenu"
+# vendors only the selected modules + transitive requires (resolve-modules.ps1,
+# registry plugin/modules.json); mandatory modules (core) always ship. Default: all.
+# Installed modules recorded in _method/modules-installed.json (hashed by the manifest).
 #
 # v1.2 (2026-07-14, vibeforge-os v0.3): writes _method/manifest.json at generation
 # (sha256 of every vendored file, via build-manifest.ps1) -> drift detection
@@ -32,7 +37,10 @@ param(
     # Destination root. Default: current directory.
     [string]$DestBase = "",
     [switch]$GitInit,
-    [switch]$DryRun
+    [switch]$DryRun,
+    # Module selection (v0.4): comma-separated ids from plugin/modules.json, or "all" (default).
+    # Mandatory modules + transitive requires are always added.
+    [string]$Modules = "all"
 )
 
 $ErrorActionPreference = "Stop"
@@ -42,7 +50,7 @@ $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 $SKILLS_EXCLUDED = @("new-lab")   # deprecated (the OS creates standalone labs only)
 # Socle subtrees copied into _method/ (frozen reference)
 $SOCLE_DIRS = @("registres", "doctrine", "templates", "scripts", "agent-contexts")
-$SOCLE_FILES = @("CLAUDE.md", "DOCTRINE.md")
+$SOCLE_FILES = @("CLAUDE.md", "DOCTRINE.md", "modules.json")
 
 # === Validation ===
 if (-not $Name) { Write-Error "Required argument: -Name <lab-name>."; exit 1 }
@@ -113,12 +121,31 @@ $socleWorkerFiles = Get-ChildItem (Join-Path $socleRoot "agents\_workers") -Filt
 $socleSkillDirs = Get-ChildItem (Join-Path $socleRoot "skills") -Directory -ErrorAction SilentlyContinue | Where-Object { $SKILLS_EXCLUDED -notcontains $_.Name }
 $socleHookFiles = Get-ChildItem (Join-Path $socleRoot "hooks") -Filter *.ps1 -File -ErrorAction SilentlyContinue
 
+# === Module resolution (v0.4) — filters the inventory when -Modules is not "all" ===
+$resolvedModules = $null
+$resolverPath = Join-Path $PSScriptRoot "resolve-modules.ps1"
+if (Test-Path $resolverPath) {
+    $resolvedJson = & powershell.exe -ExecutionPolicy Bypass -File $resolverPath -Modules $Modules -PluginRoot $socleRoot
+    if ($LASTEXITCODE -ne 0) { Write-Error "Module resolution failed for '-Modules $Modules' (see above)."; exit 1 }
+    $resolvedModules = ($resolvedJson -join "`n") | ConvertFrom-Json
+    $socleSkillDirs   = @($socleSkillDirs   | Where-Object { $resolvedModules.skills  -contains $_.Name })
+    $socleAgentFiles  = @($socleAgentFiles  | Where-Object { $resolvedModules.agents  -contains $_.BaseName })
+    $socleWorkerFiles = @($socleWorkerFiles | Where-Object { $_.Name -eq "README.md" -or $resolvedModules.workers -contains $_.BaseName })
+} elseif ($Modules.Trim().ToLower() -ne "all") {
+    Write-Error "-Modules requires resolve-modules.ps1 next to this script (not found)."; exit 1
+}
+
 # === DRY RUN ===
 if ($DryRun) {
     Write-Host "DRY RUN -- preview:" -ForegroundColor Yellow
     Write-Host "  Lab path     : $labPath"
     Write-Host "  Socle source : $socleRoot"
-    Write-Host "  Vendored     : ALL agents + workers, ALL skills except [$($SKILLS_EXCLUDED -join ', ')],"
+    if ($resolvedModules) {
+        Write-Host "  Modules      : $(($resolvedModules.modules.id) -join ', ') (selection '$Modules' + mandatory + requires)"
+        Write-Host "  Vendored     : $($socleSkillDirs.Count) skills, $($socleAgentFiles.Count) agents, $(@($socleWorkerFiles | Where-Object Name -ne 'README.md').Count) workers,"
+    } else {
+        Write-Host "  Vendored     : ALL agents + workers, ALL skills except [$($SKILLS_EXCLUDED -join ', ')],"
+    }
     Write-Host "                 hooks/*.ps1 + settings.json, living seeds (local rules/eval, metrics, audits),"
     Write-Host "                 real lab CATALOG + tools/rebuild-catalog.ps1."
     if ($GitInit) { Write-Host "  + Git init" }
@@ -169,6 +196,15 @@ vendored_on: $today
 generator: new-lab-standalone.ps1 v1.2 (vibeforge-os)
 "@
 [System.IO.File]::WriteAllText((Join-Path $methodPath "VERSION"), $versionContent, $utf8NoBom)
+# Installed modules (v0.4) — read by upgrade-lab/check-drift consumers and the future hub
+if ($resolvedModules) {
+    $modulesInstalled = [ordered]@{
+        selected_on = $today
+        selection   = $Modules
+        modules     = $resolvedModules.modules
+    }
+    [System.IO.File]::WriteAllText((Join-Path $methodPath "modules-installed.json"), ($modulesInstalled | ConvertTo-Json -Depth 4), $utf8NoBom)
+}
 
 # === Step 3/9: ALL agents (+ workers) ===
 Write-Host "[3/9] Vendoring ALL agents ($($socleAgentFiles.Count) + $($socleWorkerFiles.Count) workers)..." -ForegroundColor Green

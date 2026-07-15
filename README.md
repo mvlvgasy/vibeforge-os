@@ -9,7 +9,7 @@ memory registers, and an embedded frozen copy of the whole governance method. Th
 lab runs on **plain Claude Code**: no plugin, no dependency on this repo, nothing to install
 on the machine that uses it. Hand the folder to anyone.
 
-[![Version](https://img.shields.io/badge/version-0.3.0-2563eb)](./plugin/.claude-plugin/plugin.json)
+[![Version](https://img.shields.io/badge/version-0.4.0-2563eb)](./plugin/.claude-plugin/plugin.json)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-d97757)](https://docs.claude.com/en/docs/claude-code)
 [![Doctrine](https://img.shields.io/badge/doctrine-16%20frameworks-16a34a)](#-the-doctrine)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%2F%20PowerShell-5b8def)](#-platform)
@@ -42,14 +42,25 @@ socle + vendored agents + skills). From that point on, the lab is self-sufficien
   idempotent, backed up, rollback-able — **never overwriting a customized file** (conflicts
   are reported for human arbitration). Labs generated before v0.3: one-time
   `build-manifest.ps1 -Baseline`. See [`migrations/README.md`](./migrations/README.md).
-  _Not in scope (v0.4 candidates): marketplace, inter-module dependency resolution — the
-  socle stays monolithic._
+- **Modular socle (v0.4)** — the method ships as **7 coarse-grained versioned modules**
+  (`plugin/modules.json`): `core` (mandatory — governance + the capitalization immune system),
+  `cadrage`, `build-review`, `memoire-avancee`, `observabilite`, `contenu`, `lab-factory`.
+  Generate with `-Modules "cadrage,contenu"` — transitive `requires` are resolved
+  (`resolve-modules.ps1`), mandatory modules always ship, and the lab records what it got
+  in `_method/modules-installed.json`. Registry coverage is machine-validated
+  (`resolve-modules.ps1 -Validate`: every skill/agent claimed by exactly one module).
+- **Lab factory (v0.4)** — `/lab-factory` compiles a lab FROM the client's business instead
+  of stamping a generic one: brownfield scan before any question, a `LAB_BRIEF.md` interview,
+  a **machine-enforced completeness gate** (`check-brief.ps1`: generation refuses while a
+  `[À CLARIFIER]` marker remains or a capability lacks a business justification), modular
+  generation, then domain agents/skills compiled from the justified capability table.
+  _Not in scope (v0.5 candidates): public marketplace._
 
 ---
 
 ## 🚀 Install
 
-> ⚠️ **Pre-release (v0.3.0).** Active build. The doctrine and agents are stable; tooling and
+> ⚠️ **Pre-release (v0.4.0).** Active build. The doctrine and agents are stable; tooling and
 > packaging are still maturing.
 > Source-available: running the plugin requires written permission — see [License](#-license).
 

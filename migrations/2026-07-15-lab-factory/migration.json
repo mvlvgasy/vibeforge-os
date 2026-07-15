@@ -1,0 +1,15 @@
+{
+  "id": "2026-07-15-lab-factory",
+  "from_version": "0.3.0",
+  "to_version": "0.4.0",
+  "description": "Bring the v0.4 lab-factory to existing standalone labs: /lab-factory skill, machine-enforced brief gate (check-brief.ps1), LAB_BRIEF template, module resolver + registry.",
+  "add": [
+    { "source": "plugin/skills/lab-factory/SKILL.md", "target": ".claude/skills/lab-factory/SKILL.md" },
+    { "source": "plugin/scripts/check-brief.ps1", "target": "_method/scripts/check-brief.ps1" },
+    { "source": "plugin/scripts/resolve-modules.ps1", "target": "_method/scripts/resolve-modules.ps1" },
+    { "source": "plugin/modules.json", "target": "_method/modules.json" },
+    { "source": "plugin/templates/LAB_BRIEF.md.tpl", "target": "_method/templates/LAB_BRIEF.md.tpl" }
+  ],
+  "replace": [],
+  "remove": []
+}

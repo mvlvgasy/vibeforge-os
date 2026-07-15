@@ -1,0 +1,83 @@
+{
+  "modules_schema": 1,
+  "comment": "Module registry (v0.4). Coarse-grained ON PURPOSE: 7 modules, not 18 - over-modularization is a documented anti-pattern (audit 2026-07-14 c.1). Every skill dir / agent file of the socle must be claimed by exactly one module (resolve-modules.ps1 -Validate enforces it). 'paths' are whole subtrees always vendored with the module.",
+  "modules": [
+    {
+      "id": "core",
+      "version": "0.4.0",
+      "mandatory": true,
+      "description": "Governance socle + immune system (v1.1 lesson: a lab without capitalization/closure/memory-consolidation is an empty shell). Never excludable.",
+      "requires": [],
+      "paths": ["doctrine", "registres", "templates", "scripts", "hooks", "agent-contexts", "CLAUDE.md", "DOCTRINE.md"],
+      "skills": ["lead", "lead-auto", "skill-curator", "cloture-session", "save-cadrage", "dream", "verify-completion", "upgrade-socle", "new-lab-standalone", "new-projet", "promote-learning"],
+      "agents": ["lead", "skill-curator", "dream-validator"],
+      "workers": []
+    },
+    {
+      "id": "cadrage",
+      "version": "0.4.0",
+      "mandatory": false,
+      "description": "Product framing workflow: discovery -> PRD -> locked architecture -> compiled build prompt, with blocking PRD-coverage review (R001).",
+      "requires": ["core"],
+      "paths": [],
+      "skills": ["business-analyst", "architecte", "ux", "prompt-engineer", "reviewer-prd", "review-prd-coverage", "parallel-cadrage", "cloture-cadrage", "recover-cadrage"],
+      "agents": ["business-analyst", "architecte", "ux", "prompt-engineer", "reviewer-prd", "devil-advocate"],
+      "workers": []
+    },
+    {
+      "id": "build-review",
+      "version": "0.4.0",
+      "mandatory": false,
+      "description": "Build-session review layer: code review (single + parallel mass review) and purpose-built worker forging.",
+      "requires": ["core"],
+      "paths": [],
+      "skills": ["code-reviewer", "mass-code-review", "forge-worker"],
+      "agents": ["code-reviewer"],
+      "workers": ["module-reviewer"]
+    },
+    {
+      "id": "memoire-avancee",
+      "version": "0.4.0",
+      "mandatory": false,
+      "description": "Advanced capitalization beyond the core loop: BDR/eval promotions, register dedup, memory-age audits, cross-lab traffic.",
+      "requires": ["core"],
+      "paths": [],
+      "skills": ["promote-decision-to-bdr", "promote-pattern-to-eval", "dedup-registres", "audit-memory-age", "mass-memory-update", "traffic-controller"],
+      "agents": ["traffic-controller"],
+      "workers": []
+    },
+    {
+      "id": "observabilite",
+      "version": "0.4.0",
+      "mandatory": false,
+      "description": "Usage observability: session/transcript cost analysis, method metrics, obsolescence scans.",
+      "requires": ["core"],
+      "paths": [],
+      "skills": ["session-analyzer", "metrics-report", "scan-obsoletes"],
+      "agents": [],
+      "workers": ["transcript-analyzer"]
+    },
+    {
+      "id": "contenu",
+      "version": "0.4.0",
+      "mandatory": false,
+      "description": "Content strategy layer (editorial calendars, hooks, marketing automations) for content/marketing/freelance labs.",
+      "requires": ["cadrage"],
+      "paths": [],
+      "skills": ["strategie-contenu"],
+      "agents": ["strategie-contenu"],
+      "workers": []
+    },
+    {
+      "id": "lab-factory",
+      "version": "0.4.0",
+      "mandatory": false,
+      "description": "Custom-compiled lab generation: brownfield scan -> LAB_BRIEF interview -> machine-enforced clarification gate -> domain agents/skills compiled from justified capabilities.",
+      "requires": ["core"],
+      "paths": [],
+      "skills": ["lab-architect", "lab-factory"],
+      "agents": ["lab-architect"],
+      "workers": []
+    }
+  ]
+}
