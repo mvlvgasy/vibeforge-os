@@ -109,7 +109,7 @@ $variables = @{
     "{{VIBEFORGE_PATH}}" = "_method"
 }
 
-Write-Host "=== /new-lab-standalone v1.2 : generating '$labName' (category: $Category) ===" -ForegroundColor Cyan
+Write-Host "=== /new-lab-standalone v1.3 : generating '$labName' (category: $Category) ===" -ForegroundColor Cyan
 Write-Host "    Socle : $socleRoot ($socleCommit)" -ForegroundColor Cyan
 Write-Host ""
 
