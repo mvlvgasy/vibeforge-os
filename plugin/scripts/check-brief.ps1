@@ -18,9 +18,11 @@ $problems = @()
 # NOTE encoding: this script stays ASCII-only in its patterns (PS 5.1 reads BOM-less .ps1
 # as ANSI -> accented literals in regexes silently stop matching UTF-8 file content).
 
-# 1. Clarification markers: any remaining '...CLARIFIER]' token is a hole
+# 1. Clarification markers: any remaining '...CLARIFIER]' token is a hole.
+#    Blockquote lines ('>') are skipped: the template's own instructions MENTION the
+#    marker there (false positive found by the first real-world run, 2026-07-15).
 for ($i = 0; $i -lt $lines.Count; $i++) {
-    if ($lines[$i] -match 'CLARIFIER\]') {
+    if ($lines[$i] -match 'CLARIFIER\]' -and $lines[$i] -notmatch '^\s*>') {
         $problems += "MARKER line $($i + 1): $($lines[$i].Trim())"
     }
 }
