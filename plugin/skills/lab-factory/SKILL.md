@@ -61,12 +61,19 @@ Contrat de mission :
 
 ## 6. Vérification (preuve, pas déclaration — axiome 2)
 
-1. `tools/rebuild-catalog.ps1` dans le lab → le CATALOG liste les agents/skills compilés.
-2. `check-drift.ps1 -LabPath <lab>` → `STATUS: OK` (les customs sont hors manifeste = couche
+1. **Lint de conformité de la compilation** (BLOQUANT — né du premier run réel, 2026-07-15 :
+   la compilation LLM produit du presque-conforme même avec des consignes explicites) :
+   ```powershell
+   powershell.exe -ExecutionPolicy Bypass -File <socle>/scripts/check-compiled.ps1 -LabPath <lab>
+   ```
+   `NONCONFORM` → corriger chaque `LINT-ERROR` (frontmatter manquant, tools en liste YAML,
+   Tool(pattern)…) et relancer. Max 3 passes, puis escalade. On ne livre pas un lab NONCONFORM.
+2. `tools/rebuild-catalog.ps1` dans le lab → le CATALOG liste les agents/skills compilés.
+3. `check-drift.ps1 -LabPath <lab>` → `STATUS: OK` (les customs sont hors manifeste = couche
    custom par construction ; le socle est intact).
-3. `check-brief.ps1` sur le brief copié → toujours READY.
-4. Annoncer : modules posés, capacités compilées (table Cn → fichier créé), et le rappel L41
-   (les skills du lab ne sont invocables qu'à la première session ouverte DANS le lab).
+4. `check-brief.ps1` sur le brief copié → toujours READY.
+5. Annoncer : modules posés, capacités compilées (table Cn → fichier créé), verdict du lint,
+   et le rappel L41 (les skills du lab ne sont invocables qu'à la première session ouverte DANS le lab).
 
 ## Jamais
 

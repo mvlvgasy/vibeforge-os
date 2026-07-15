@@ -66,6 +66,28 @@ try {
     # CATALOG must not list ghost skills from excluded modules
     $catalog = Get-Content (Join-Path $lab "registres\CATALOG.md") -Raw -Encoding utf8
     Assert ($catalog -notmatch 'business-analyst') "CATALOG has no ghost entry from excluded module"
+
+    # === 4. check-compiled (conformity lint of the custom layer) ===
+    Write-Host "[4] check-compiled.ps1..." -ForegroundColor Cyan
+    $out = & powershell.exe -ExecutionPolicy Bypass -File (Join-Path $scriptsDir "check-compiled.ps1") -LabPath $lab
+    Assert ($LASTEXITCODE -eq 0 -and ($out -join "`n") -match "STATUS: CONFORM") "empty custom layer -> CONFORM"
+    # compiled agent with YAML block-list tools + skill without frontmatter (the 2 real-world defects)
+    $badAgent = @("---", "name: custom-test", "description: agent de test", "model: claude-haiku-4-5", "tools:", "  - Read", "  - Write", "---", "", "# custom-test") -join "`n"
+    [System.IO.File]::WriteAllText((Join-Path $lab ".claude\agents\custom-test.md"), $badAgent, $utf8NoBom)
+    $badSkillDir = Join-Path $lab ".claude\skills\custom-skill"
+    New-Item -ItemType Directory -Force -Path $badSkillDir | Out-Null
+    [System.IO.File]::WriteAllText((Join-Path $badSkillDir "SKILL.md"), "# custom-skill`nno frontmatter here`n", $utf8NoBom)
+    $out = & powershell.exe -ExecutionPolicy Bypass -File (Join-Path $scriptsDir "check-compiled.ps1") -LabPath $lab
+    $txt = $out -join "`n"
+    Assert ($LASTEXITCODE -eq 1 -and $txt -match "A4 'tools' is a YAML block list") "YAML block-list tools caught (A4)"
+    Assert ($txt -match "S1 no frontmatter block") "skill without frontmatter caught (S1)"
+    Assert ($txt -notmatch "LINT-ERROR \.claude/agents/lead\.md") "socle files NOT linted (manifest scoping)"
+    # fixed versions -> conform again
+    $goodAgent = $badAgent -replace "tools:`n  - Read`n  - Write", "tools: Read, Write"
+    [System.IO.File]::WriteAllText((Join-Path $lab ".claude\agents\custom-test.md"), $goodAgent, $utf8NoBom)
+    [System.IO.File]::WriteAllText((Join-Path $badSkillDir "SKILL.md"), "---`nname: custom-skill`ndescription: skill de test`n---`n# custom-skill`n", $utf8NoBom)
+    $out = & powershell.exe -ExecutionPolicy Bypass -File (Join-Path $scriptsDir "check-compiled.ps1") -LabPath $lab
+    Assert ($LASTEXITCODE -eq 0) "after fixes -> CONFORM again"
 } finally {
     Remove-Item $sandbox -Recurse -Force -ErrorAction SilentlyContinue
 }
