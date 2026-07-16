@@ -1,7 +1,9 @@
 # audit-memory-age.ps1
 # Support script for the /audit-memory-age skill.
 # Scans every MEMORY.md (3 levels per R009), computes age, cross-checks metrics.
+# Also checks the R016 word-count ceiling (WARNING >=450, VIOLATION >=500).
 # Output: a markdown report in <BaseDir>/vibeforge/metrics/memory-audit-<timestamp>.md
+# Exit code: 1 if at least one MEMORY.md is in R016 VIOLATION (>=500 words), else 0.
 #
 # Paths point at the USER workspace, not the plugin. By default the scan runs
 # from the current directory; override with -BaseDir to point at your stack root
@@ -9,6 +11,8 @@
 
 param(
     [int]$Threshold = 14,
+    [int]$WordWarnThreshold = 450,
+    [int]$WordViolationThreshold = 500,
     # Root of your workspace: the folder containing the method repo and lab-* dirs.
     # Defaults to the current working directory.
     [string]$BaseDir = (Get-Location).Path
@@ -20,6 +24,14 @@ $now = Get-Date
 $reportDate = $now.ToString("yyyy-MM-dd HH:mm")
 $reportSlug = $now.ToString("yyyy-MM-dd-HHmm")
 $vibeforgeRoot = Join-Path $BaseDir "vibeforge"
+
+function Get-MemoryWordCount {
+    param([string]$Path)
+    $content = Get-Content -Path $Path -Raw -Encoding utf8 -ErrorAction SilentlyContinue
+    if ([string]::IsNullOrWhiteSpace($content)) { return 0 }
+    $words = $content -split '\s+' | Where-Object { $_.Length -gt 0 }
+    return $words.Count
+}
 
 # ===========================================
 # Step 1 - Scan MEMORY.md at 3 levels
@@ -37,6 +49,7 @@ if (Test-Path $universalDir) {
             Agent = $agentName
             Level = "universal"
             Mtime = $_.LastWriteTime
+            Words = Get-MemoryWordCount -Path $_.FullName
         }
     }
 }
@@ -54,6 +67,7 @@ Get-ChildItem -Path $BaseDir -Filter "lab-*" -Directory -ErrorAction SilentlyCon
                 Agent = $agentName
                 Level = "lab ($labName)"
                 Mtime = $_.LastWriteTime
+                Words = Get-MemoryWordCount -Path $_.FullName
             }
         }
     }
@@ -76,6 +90,7 @@ Get-ChildItem -Path $BaseDir -Filter "lab-*" -Directory -ErrorAction SilentlyCon
                         Agent = $agentName
                         Level = "project ($labName/$projectName)"
                         Mtime = $_.LastWriteTime
+                        Words = Get-MemoryWordCount -Path $_.FullName
                     }
                 }
             }
@@ -144,6 +159,20 @@ foreach ($m in $memoryFiles) {
     }
 }
 
+# ===========================================
+# Step 4bis - R016 word-count ceiling (WARNING >= 450, VIOLATION >= 500)
+# ===========================================
+
+$wordViolations = @($memoryFiles | Where-Object { $_.Words -ge $WordViolationThreshold })
+$wordWarnings = @($memoryFiles | Where-Object { $_.Words -ge $WordWarnThreshold -and $_.Words -lt $WordViolationThreshold })
+
+$wordcountStatus = "OK"
+if ($wordViolations.Count -gt 0) {
+    $wordcountStatus = "VIOLATION"
+} elseif ($wordWarnings.Count -gt 0) {
+    $wordcountStatus = "WARNING"
+}
+
 # Pyramid
 $pyramidUniv = ($memoryFiles | Where-Object { $_.Level -eq "universal" }).Count
 $pyramidLab = ($memoryFiles | Where-Object { $_.Level -like "lab*" }).Count
@@ -172,6 +201,7 @@ $lines = @(
     "- **Amnesic agents** (age > ${Threshold}d AND >3 invocations in the window): $($amnesicAgents.Count)",
     "- **Inactive agents** (0 invocations in the window): $($inactiveAgents.Count)",
     "- **Pending R009 markers unresolved**: $($pendingMarkers.Count)",
+    "- **R016 word-count ceiling**: STATUS $wordcountStatus ($($wordViolations.Count) VIOLATION >= $WordViolationThreshold words, $($wordWarnings.Count) WARNING >= $WordWarnThreshold words)",
     "",
     "## Current pyramid (R009 target: ~5/15/80%)",
     "",
@@ -194,8 +224,8 @@ $lines += @(
     "",
     "## Detail per agent",
     "",
-    "| Agent | Level | Age (d) | Invocations | Status |",
-    "|-------|-------|---------|-------------|--------|"
+    "| Agent | Level | Age (d) | Invocations | Words | Status |",
+    "|-------|-------|---------|-------------|-------|--------|"
 )
 
 foreach ($a in ($memoryFiles | Sort-Object Agent, Level)) {
@@ -208,7 +238,32 @@ foreach ($a in ($memoryFiles | Sort-Object Agent, Level)) {
     } else {
         $status = "OK"
     }
-    $lines += "| $($a.Agent) | $($a.Level) | $ageDays | $invokes | $status |"
+    if ($a.Words -ge $WordViolationThreshold) {
+        $status = "$status + word VIOLATION"
+    } elseif ($a.Words -ge $WordWarnThreshold) {
+        $status = "$status + word WARNING"
+    }
+    $lines += "| $($a.Agent) | $($a.Level) | $ageDays | $invokes | $($a.Words) | $status |"
+}
+
+$lines += @(
+    "",
+    "## R016 word-count ceiling (WARNING >= $WordWarnThreshold, VIOLATION >= $WordViolationThreshold)",
+    "",
+    "STATUS: $wordcountStatus",
+    ""
+)
+if ($wordViolations.Count -eq 0 -and $wordWarnings.Count -eq 0) {
+    $lines += "*(no MEMORY.md above $WordWarnThreshold words -- good sign)*"
+} else {
+    $lines += "| Agent | Level | Words | Status |"
+    $lines += "|-------|-------|-------|--------|"
+    foreach ($v in ($wordViolations | Sort-Object -Property Words -Descending)) {
+        $lines += "| $($v.Agent) | $($v.Level) | $($v.Words) | VIOLATION |"
+    }
+    foreach ($w in ($wordWarnings | Sort-Object -Property Words -Descending)) {
+        $lines += "| $($w.Agent) | $($w.Level) | $($w.Words) | WARNING |"
+    }
 }
 
 $lines += @("", "## Pending R009 markers", "")
@@ -239,6 +294,15 @@ if ($amnesicAgents.Count -gt 0) {
     $lines += ""
 }
 
+if ($wordViolations.Count -gt 0) {
+    $lines += "### MEMORY in R016 VIOLATION (>= $WordViolationThreshold words) to prune"
+    $lines += ""
+    foreach ($v in $wordViolations | Sort-Object -Property Words -Descending) {
+        $lines += "- **$($v.Agent)** ($($v.Level), $($v.Words) words): prune the oldest / least-cited entries to $($v.Path -replace 'MEMORY\.md$', 'journal.md') BEFORE any new write"
+    }
+    $lines += ""
+}
+
 if ($pendingMarkers.Count -gt 0) {
     $lines += "### Pending R009 markers to handle"
     $lines += ""
@@ -248,7 +312,7 @@ if ($pendingMarkers.Count -gt 0) {
     $lines += ""
 }
 
-if ($amnesicAgents.Count -eq 0 -and $pendingMarkers.Count -eq 0) {
+if ($amnesicAgents.Count -eq 0 -and $pendingMarkers.Count -eq 0 -and $wordViolations.Count -eq 0) {
     $lines += "No action required. MEMORY system is healthy."
     $lines += ""
 }
@@ -273,3 +337,16 @@ Write-Output "Report written: $reportPath"
 Write-Output "- $totalMemories MEMORY audited"
 Write-Output "- $($healthyAgents.Count) healthy / $($amnesicAgents.Count) amnesic / $($inactiveAgents.Count) inactive"
 Write-Output "- $($pendingMarkers.Count) pending markers"
+Write-Output "STATUS: $wordcountStatus"
+Write-Output "- R016 word-count ceiling: $($wordViolations.Count) VIOLATION (>= $WordViolationThreshold words) / $($wordWarnings.Count) WARNING (>= $WordWarnThreshold words)"
+foreach ($v in $wordViolations | Sort-Object -Property Words -Descending) {
+    Write-Output "  [VIOLATION] $($v.Agent) ($($v.Level)): $($v.Words) words -- $($v.Path)"
+}
+foreach ($w in $wordWarnings | Sort-Object -Property Words -Descending) {
+    Write-Output "  [WARNING]   $($w.Agent) ($($w.Level)): $($w.Words) words -- $($w.Path)"
+}
+
+if ($wordViolations.Count -gt 0) {
+    exit 1
+}
+exit 0
