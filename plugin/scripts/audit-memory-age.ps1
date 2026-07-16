@@ -15,7 +15,11 @@ param(
     [int]$WordViolationThreshold = 500,
     # Root of your workspace: the folder containing the method repo and lab-* dirs.
     # Defaults to the current working directory.
-    [string]$BaseDir = (Get-Location).Path
+    [string]$BaseDir = (Get-Location).Path,
+    # Fast mode for the SessionStart hook: scan + word ceiling only (skips the
+    # metrics cross-check and the full report write). Non-blocking, redirect
+    # 2>&1 to a log rather than showing raw output to the user.
+    [switch]$WordCountOnly
 )
 
 $ErrorActionPreference = "SilentlyContinue"
@@ -96,6 +100,29 @@ Get-ChildItem -Path $BaseDir -Filter "lab-*" -Directory -ErrorAction SilentlyCon
             }
         }
     }
+}
+
+# ===========================================
+# Fast mode -WordCountOnly (SessionStart hook, R016)
+# ===========================================
+
+if ($WordCountOnly) {
+    $fastViolations = @($memoryFiles | Where-Object { $_.Words -ge $WordViolationThreshold })
+    $fastWarnings = @($memoryFiles | Where-Object { $_.Words -ge $WordWarnThreshold -and $_.Words -lt $WordViolationThreshold })
+    $fastStatus = "OK"
+    if ($fastViolations.Count -gt 0) { $fastStatus = "VIOLATION" } elseif ($fastWarnings.Count -gt 0) { $fastStatus = "WARNING" }
+
+    Write-Output "STATUS: $fastStatus"
+    Write-Output "- R016 word-count ceiling: $($fastViolations.Count) VIOLATION (>= $WordViolationThreshold words) / $($fastWarnings.Count) WARNING (>= $WordWarnThreshold words) / $($memoryFiles.Count) MEMORY scanned"
+    foreach ($v in $fastViolations | Sort-Object -Property Words -Descending) {
+        Write-Output "  [VIOLATION] $($v.Agent) ($($v.Level)): $($v.Words) words -- $($v.Path)"
+    }
+    foreach ($w in $fastWarnings | Sort-Object -Property Words -Descending) {
+        Write-Output "  [WARNING]   $($w.Agent) ($($w.Level)): $($w.Words) words -- $($w.Path)"
+    }
+
+    if ($fastViolations.Count -gt 0) { exit 1 }
+    exit 0
 }
 
 # ===========================================

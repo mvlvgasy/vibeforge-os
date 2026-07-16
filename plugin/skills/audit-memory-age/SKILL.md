@@ -1,13 +1,21 @@
 ---
 name: audit-memory-age
-description: Scans the agents' MEMORY.md files (3 levels), computes age, detects amnesic agents (>14d without update despite invocations). Report + recommendations.
+description: Scans the agents' MEMORY.md files (3 levels), computes age, detects amnesic agents (>14d without update despite invocations), and the R016 word ceiling (WARNING >=450, VIOLATION >=500). Report + recommendations.
 when_to_use: |
   Health diagnostic of the agents' learning system.
-  Invoke weekly or when you suspect the agents are forgetting.
+  Invoke weekly or when you suspect the agents are forgetting, or for a full
+  report (pyramid, markers, recommendations) beyond the fast check already
+  run automatically at every SessionStart.
   Example: /audit-memory-age, /audit-memory-age --threshold 30
 allowed-tools: Read Glob Bash
 argument-hint: "[--threshold <days>]"
 ---
+
+## Implementation
+
+This skill is automated by `scripts/audit-memory-age.ps1`: invoke `pwsh scripts/audit-memory-age.ps1 -BaseDir <path> -Threshold <N>` directly rather than redoing steps 1-6 by hand. `-BaseDir` points at a workspace root containing a `vibeforge`-style method repo plus `lab-*` folders (dependent multi-lab layout).
+
+**For a standalone lab** (single lab, no nested `lab-*` folders), the R016 word ceiling already runs automatically without invoking this skill: `hooks/session-start.ps1` scans this lab's own `agent-contexts/` + `projets-meta/*/agent-contexts/` at every session start and drops `.claude/memory-wordcount-pending.md` on VIOLATION (>=500 words). This skill remains useful for the full report (pyramid, R009 markers, detailed recommendations) or for auditing a dependent multi-lab workspace.
 
 ## Purpose
 
@@ -58,6 +66,14 @@ Read `<workspace>/metrics/events.jsonl` (Tier 1 metrics). For each agent, count 
 - Invocations > 3 over the same period
 
 → It was actively invoked but never updated its MEMORY. This is a signal of a doctrinal bug or agent-side friction.
+
+### Step 4bis — R016 word ceiling
+
+For each MEMORY.md, count words (split on whitespace). Classify:
+- **WARNING** if >= 450 words
+- **VIOLATION** if >= 500 words (R016 HARD ceiling)
+
+See R016 in `registres/rules.md` for the mandatory pruning-before-write mechanism.
 
 ### Step 5 — Detect pending R009 markers
 
