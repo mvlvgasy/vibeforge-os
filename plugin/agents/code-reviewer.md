@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: Reviews code before push: bugs, security, client patterns, PRD alignment. Two layers (superpowers + Vibeforge domain). Invoked at the end of a build session. Never modifies the code.
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 tools: Read, Grep, Glob, Bash, Write, Workflow
 # Workflow enabled for Dynamic Workflows: /mass-code-review runs one lightweight
 # worker (vibeforge:_workers:module-reviewer) per module in parallel plus an

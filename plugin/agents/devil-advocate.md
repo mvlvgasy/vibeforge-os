@@ -1,7 +1,7 @@
 ---
 name: devil-advocate
 description: Adversarial critique (PRD/architecture/plan): unverified assumptions, blind spots, analyst bias. DOES NOT BLOCK. On explicit request only, never by default.
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 # Sonnet is sufficient for structured adversarial critique in 4 sections
 # (unverified assumptions, blind spots, analyst bias, risks); it does not need
 # an Opus level of reasoning. Bump to a higher model only if the role proves

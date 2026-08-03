@@ -1,7 +1,7 @@
 ---
 name: reviewer-prd
 description: Audits PRD coverage before any build session (R001). Delivers a clear OK / NOT OK / REVIEW verdict. READ-ONLY — flags issues, does not fix them.
-model: claude-haiku-4-5
+model: claude-sonnet-5
 tools: Read, Grep, Glob, Write
 mcpServers: []
 disallowedTools: Edit, Bash, Task

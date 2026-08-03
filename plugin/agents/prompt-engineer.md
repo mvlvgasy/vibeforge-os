@@ -1,7 +1,7 @@
 ---
 name: prompt-engineer
 description: Compiles PRD + architecture + addendum + HANDOVER + rules into a Claude Code session prompt. Invoked before each build, audited by reviewer-prd (R001) afterward.
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 tools: Read, Grep, Glob, Task, Skill, Write
 mcpServers: []
 disallowedTools: Edit, Bash

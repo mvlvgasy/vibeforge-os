@@ -1,7 +1,7 @@
 ---
 name: business-analyst
 description: Business need scoping, PRD writing, stakeholder discovery and success criteria. Invoked upstream of any work item, before architecte.
-model: claude-opus-4-8
+model: claude-opus-5
 tools: Read, Grep, Glob, Task, Skill, Write
 mcpServers: [notion]
 disallowedTools: Edit, Bash

@@ -1,7 +1,7 @@
 ---
 name: skill-curator
 description: Validates skills proposed by agents (5 checks: duplicates, overlap, granularity, format, relevance). Decides approve/merge/revise/reject. Invoked before any write into skills/.
-model: claude-haiku-4-5
+model: claude-sonnet-5
 tools: Read, Grep, Glob, Edit, Write, Bash
 disallowedTools: Task
 # Tools declared as simple names; Bash is allowed with operational scope guaranteed by strict SOUL/USER + permissionMode default.

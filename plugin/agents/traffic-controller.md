@@ -1,7 +1,7 @@
 ---
 name: traffic-controller
 description: Cross-lab scan, proposes promotions (learnings → global rules) and demotions. Never promotes without operator validation. Active at ≥3 active projects.
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 tools: Read, Grep, Glob, Write, Edit
 disallowedTools: Bash, Task
 # Write/Edit declared as simple names. traffic-controller holds the UNIQUE authorization to write into registres/* (critical business rule), guaranteed by strict prompt only.

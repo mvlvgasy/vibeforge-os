@@ -1,7 +1,7 @@
 ---
 name: ux
 description: User journeys, textual wireframes, tone guide, personas, a11y. Never codes. Invoked before or in parallel with the architect on user-facing apps.
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 tools: Read, Grep, Glob, Task, Skill, Write, WebFetch, WebSearch
 mcpServers: [notion]
 disallowedTools: Edit, Bash

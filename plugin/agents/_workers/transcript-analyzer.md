@@ -1,7 +1,7 @@
 ---
 name: transcript-analyzer
 description: DW worker — metrics for ONE .jsonl transcript. RUNS the deterministic script analyze-transcript.mjs (no LLM estimation) + adds a short qualitative read. Haiku model.
-model: claude-haiku-4-5
+model: claude-sonnet-5
 tools: Read, Bash, Grep
 disallowedTools: Edit, Write, Task, Skill
 mcpServers: []

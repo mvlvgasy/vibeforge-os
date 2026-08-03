@@ -1,7 +1,7 @@
 ---
 name: module-reviewer
 description: DW worker — reviews ONE module/file (bugs, security, conventions/GDPR patterns). Lightweight, no full bootstrap. Launched in parallel by /mass-code-review.
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 tools: Read, Grep, Glob, Bash
 disallowedTools: Edit, Write, Task, Skill
 mcpServers: []

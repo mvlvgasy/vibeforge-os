@@ -1,7 +1,7 @@
 ---
 name: lead
 description: The single orchestrator. Delegates to specialists via the Task tool. Never writes code. 3 modes - /lead-auto (autonomous), /lead (semi-auto, default), direct slash command.
-model: claude-sonnet-4-6
+model: claude-opus-5
 tools: Read, Grep, Glob, Task, Skill, Bash, Workflow
 # Workflow enables orchestrating massive parallel sub-tasks (multi-module review,
 # multi-session analysis) via /mass-* skills, instead of delegating sequentially.

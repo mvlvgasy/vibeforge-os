@@ -1,7 +1,7 @@
 ---
 name: dream-validator
 description: Validates MEMORY proposals (apply/reject/defer). Auto-applies when there are >=3 sources and a clear scope. Invoked after each memory-proposal run.
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 tools: Read, Edit, Glob, Grep, Bash, Write
 disallowedTools: Task
 # Operational scope is enforced by strict SOUL/USER bootstrap + permissionMode default; tool names kept as simple names.

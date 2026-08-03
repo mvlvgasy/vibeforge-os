@@ -1,7 +1,7 @@
 ---
 name: strategie-contenu
 description: Content strategy and marketing automation: editorial calendars, narrative hooks, n8n/Make workflows. For content, marketing, freelance labs.
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 tools: Read, Grep, Glob, Task, Skill, Write, WebFetch, WebSearch
 mcpServers: [notion]
 disallowedTools: Edit, Bash

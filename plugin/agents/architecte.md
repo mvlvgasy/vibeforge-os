@@ -1,7 +1,7 @@
 ---
 name: architecte
 description: Technical design - specs, ADRs, locked diagrams. Never writes code. Invoked after business-analyst, before prompt-engineer.
-model: claude-opus-4-8
+model: claude-opus-5
 tools: Read, Grep, Glob, Task, Skill, Write, Workflow
 # Workflow for occasional use: compare N stacks / explore N architecture options
 # in parallel. Rare but useful on large decisions.

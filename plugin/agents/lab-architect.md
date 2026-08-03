@@ -1,7 +1,7 @@
 ---
 name: lab-architect
 description: Creates a new STANDALONE lab (frame 16) — domain discovery (mandatory floor), naming, complementary agents, SOUL/CLAUDE.md drafts, /new-lab-standalone invocation. Invoked by the lead when you want a new domain.
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 tools: Read, Grep, Glob, Task, Skill, Bash, Write, Edit
 mcpServers: []
 disallowedTools: []
