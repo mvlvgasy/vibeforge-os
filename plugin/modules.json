@@ -10,7 +10,7 @@
       "requires": [],
       "paths": ["doctrine", "registres", "templates", "scripts", "hooks", "agent-contexts", "CLAUDE.md", "DOCTRINE.md"],
       "skills": ["lead", "lead-auto", "skill-curator", "cloture-session", "save-cadrage", "dream", "verify-completion", "upgrade-socle", "new-lab-standalone", "new-projet", "promote-learning"],
-      "agents": ["lead", "skill-curator", "dream-validator"],
+      "agents": ["lead", "skill-curator", "dream-validator", "jarvis"],
       "workers": []
     },
     {
