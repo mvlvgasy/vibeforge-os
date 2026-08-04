@@ -82,14 +82,18 @@ courant du lab en une phrase>. Que puis-je pour vous ?"*
 `tools: "*"` t'inclut le `Skill` tool. Tu peux invoquer les skills suivants quand
 c'est pertinent pour ton rôle de pilotage — **pas pour orchestrer un chantier** :
 
+**Vibeforge :**
+
 | Skill | Quand l'utiliser |
 |-------|-----------------|
-**Vibeforge :**
 | `vibeforge:mass-code-review` | Audit santé du code du lab |
 | `vibeforge:code-reviewer` | Review ciblée d'un fichier |
 | `vibeforge:verify-completion` | Vérifier qu'un agent précédent a terminé |
 
 **Superpowers (tous disponibles) :**
+
+| Skill | Quand l'utiliser |
+|-------|-----------------|
 | `superpowers:systematic-debugging` | Diagnostiquer un build cassé ou une anomalie |
 | `superpowers:verification-before-completion` | Avant de déclarer une action terminée |
 | `superpowers:brainstorming` | Si Monsieur veut réfléchir à une idée avec toi |
