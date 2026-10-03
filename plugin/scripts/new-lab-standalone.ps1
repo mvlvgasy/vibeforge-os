@@ -299,6 +299,12 @@ if (Test-Path $socleHooksJson) {
     $wiring = Get-Content $socleHooksJson -Raw -Encoding utf8
     $wiring = $wiring.Replace('${CLAUDE_PLUGIN_ROOT}\\hooks\\', '${CLAUDE_PROJECT_DIR}\\.claude\\hooks\\')
     $wiring = $wiring.Replace('loaded automatically when the vibeforge plugin is installed. Uses CLAUDE_PLUGIN_ROOT (Claude Code resolves the plugin path) to point at the PowerShell scripts.', 'standalone lab wiring - points at the lab-local .claude/hooks scripts via CLAUDE_PROJECT_DIR.')
+    # A standalone lab carries its own copy of the hooks, agents and skills. On a machine where the
+    # vibeforge plugin is also enabled at user level, both copies would load and every hook would
+    # run twice. Disable the plugin for this lab only (harmless where the plugin is not installed).
+    $hooksKey = [regex]'"hooks"\s*:\s*\{'
+    $pluginOff = '"enabledPlugins": {' + "`n" + '    "vibeforge@vibeforge-marketplace": false' + "`n" + '  },' + "`n" + '  "hooks": {'
+    if ($wiring -notmatch '"enabledPlugins"') { $wiring = $hooksKey.Replace($wiring, $pluginOff, 1) }
     [System.IO.File]::WriteAllText((Join-Path $labPath ".claude\settings.json"), $wiring, $utf8NoBom)
 }
 
