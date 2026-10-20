@@ -20,8 +20,8 @@
       "description": "Product framing workflow: discovery -> PRD -> locked architecture -> compiled build prompt, with blocking PRD-coverage review (R001).",
       "requires": ["core"],
       "paths": [],
-      "skills": ["business-analyst", "architecte", "ux", "prompt-engineer", "reviewer-prd", "review-prd-coverage", "parallel-cadrage", "cloture-cadrage", "recover-cadrage"],
-      "agents": ["business-analyst", "architecte", "ux", "prompt-engineer", "reviewer-prd", "devil-advocate"],
+      "skills": ["business-analyst", "architecte", "ux", "prompt-engineer", "reviewer-prd", "review-prd-coverage", "parallel-cadrage", "cloture-cadrage", "recover-cadrage", "use-cases"],
+      "agents": ["business-analyst", "architecte", "ux", "prompt-engineer", "reviewer-prd", "devil-advocate", "verifier"],
       "workers": []
     },
     {

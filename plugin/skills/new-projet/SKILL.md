@@ -65,6 +65,7 @@ DO NOT use it for:
 - `affiliated-lab=<lab-xxx>` (**required**): name of the parent lab (`lab-<name>` format). The lab must exist.
 - `--git-init` (flag): initializes git in the **deliverable** + first commit
 - `--github-repo=<url>` (optional): URL of the GitHub origin remote (implies `--git-init`)
+- `profil=<leger|standard|complet>` (default `standard`, frame 18): scoping rigor. **Ask the operator** if not given, with a recommendation: `leger` for a POC under a week, `standard` for a team tool, `complet` for sensitive data, critical production or an external client. Never `complet` by default.
 - `--dry-run` (flag): preview without creating
 
 ### Step 2 — Check the prerequisites
@@ -83,6 +84,7 @@ powershell.exe -ExecutionPolicy Bypass `
     -File ${CLAUDE_PLUGIN_ROOT}/scripts/new-projet.ps1 `
     -Name "<name>" `
     -AffiliatedLab "<lab-xxx>" `
+    -Profil "<leger|standard|complet>" `
     -GitInit `
     -GithubRepo "<url>"
 ```
