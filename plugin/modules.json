@@ -4,7 +4,7 @@
   "modules": [
     {
       "id": "core",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "mandatory": true,
       "description": "Governance socle + immune system (v1.1 lesson: a lab without capitalization/closure/memory-consolidation is an empty shell). Never excludable.",
       "requires": [],

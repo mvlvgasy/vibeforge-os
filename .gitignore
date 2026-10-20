@@ -13,7 +13,8 @@ node_modules/
 Thumbs.db
 
 # Local Claude session artifacts
-.claude/settings.local.json
+# Whole .claude/ dirs at any level: session logs, local hook output (contain local paths)
+.claude/
 
 # Internal working notes (never published)
 BUILDPLAN.md

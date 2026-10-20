@@ -1,5 +1,5 @@
-# Journal — jarvis
+# Journal - jarvis
 
-> Blocs datés, plus récent en haut. Format : demande, actions, résultat, capitalisation.
+> Dated blocks, most recent first. Format: request, actions, result, capitalization.
 
-*(vide — aucune session encore)*
+*(empty - no sessions yet)*

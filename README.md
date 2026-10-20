@@ -9,7 +9,7 @@ memory registers, and an embedded frozen copy of the whole governance method. Th
 lab runs on **plain Claude Code**: no plugin, no dependency on this repo, nothing to install
 on the machine that uses it. Hand the folder to anyone.
 
-[![Version](https://img.shields.io/badge/version-0.4.0-2563eb)](./plugin/.claude-plugin/plugin.json)
+[![Version](https://img.shields.io/badge/version-0.4.1-2563eb)](./plugin/.claude-plugin/plugin.json)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-d97757)](https://docs.claude.com/en/docs/claude-code)
 [![Doctrine](https://img.shields.io/badge/doctrine-16%20frameworks-16a34a)](#-the-doctrine)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%2F%20PowerShell-5b8def)](#-platform)
@@ -60,7 +60,7 @@ socle + vendored agents + skills). From that point on, the lab is self-sufficien
 
 ## 🚀 Install
 
-> ⚠️ **Pre-release (v0.4.0).** Active build. The doctrine and agents are stable; tooling and
+> ⚠️ **Pre-release (v0.4.1).** Active build. The doctrine and agents are stable; tooling and
 > packaging are still maturing.
 > Source-available: running the plugin requires written permission — see [License](#-license).
 

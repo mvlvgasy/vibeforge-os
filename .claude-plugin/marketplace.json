@@ -7,7 +7,7 @@
     {
       "name": "vibeforge",
       "description": "Vibeforge — a Claude Code governance methodology: multi-agent orchestration, discovery-driven lab scaffolding, and organic capitalization across projects.",
-      "version": "0.1.0",
+      "version": "0.4.1",
       "source": "./plugin",
       "author": {
         "name": "mvlvgasy"
