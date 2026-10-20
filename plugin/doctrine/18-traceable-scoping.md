@@ -10,10 +10,24 @@ The method scoped the **need** well (discovery, PRD, reasoned architecture) but 
 Frame 18 keeps the depth of the discovery and adds a traceable backbone:
 
 ```
-Question (Q-xx) → Decision → Requirement (REQ-xx) → Observable criterion (PRD §7) → Phase / Plan (ROADMAP) → Proof (verifier)
+Use case (UC-xx) → Question (Q-xx) → Decision → Requirement (REQ-xx) → Observable criterion (PRD §7) → Phase / Plan (ROADMAP) → Proof (verifier)
 ```
 
 Each link quotes the ID of the previous one. A reader who does not know the method (manager, business sponsor) can follow the file without a guide.
+
+## Step 0: detect and prioritize use cases (`/use-cases`)
+
+Before scoping a project you need to know which one. Typical case: a PO joining an organization, where nobody hands over a PRD and the job is to find where AI really helps.
+
+1. **Pain-point interviews** per team (`interview-guide`): look for repetitive, slow, inconsistent or risky tasks, not AI ideas.
+2. **One sheet per candidate** (`UC-xx.md`): the pain point, the AI angle, data, grid, unknowns.
+3. **Prioritization grid** in `PORTFOLIO.md`: value, feasibility, risk, effort, scored 1 to 3 with a one-sentence justification, `?` if unknown. Four families: quick win, strategic bet, to dig, to drop.
+4. **Recommended top 3**, validated by the sponsor and recorded with who, when, how.
+5. **Launch** (`/use-cases launch UC-xx`): rigor profile recommended from the grid, `/new-projet`, then `discovery-notes.md` and `QUESTIONS.md` seeded from the sheet. The traceability chain therefore starts at `UC-xx`.
+
+Lab-level files: `<lab>/use-cases/PORTFOLIO.md`, `UC-xx.md`, `interviews/`. Templates: `templates/use-cases/`.
+
+No invented numbers: a volume or time spent is an `estimate` with its source, or `unknown`.
 
 ## The 6 artefacts (in `projets-meta/<project>/docs/`)
 

@@ -53,6 +53,10 @@ Frame 18 (`doctrine/18-traceable-scoping.md`), templates already copied by `/new
 
 ## Methodology
 
+### Step 0 - Does the project come from a use case?
+
+If the project was launched by `/use-cases launch UC-xx`, first read `<lab>/use-cases/UC-xx.md`: the pain point, grid and unknowns are your starting point. Do not re-ask what was answered in interview. If asked to find what to build (no project chosen), redirect to `/use-cases`.
+
 ### Step A - Bootstrap + contract
 Bootstrap. If the contract is ambiguous -> escalate to the lead BEFORE starting the BA work.
 

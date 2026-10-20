@@ -152,6 +152,7 @@ The operator invokes ONLY YOU. It's up to you to dispatch to the right agent at 
 | "Cross-project audit", "learning promotion", "what's recurring", "consolidate" | `traffic-controller` | At the end of a work item, OR in `/cloture-session` if >= 3 active/completed projects |
 | "New skill", "validate this skill", "I created a skill" | `skill-curator` | **MANDATORY** before any commit in `.claude/skills/` (R6 sacred) |
 | "Code review", "audit before push", "phase 5 end of build" | `code-reviewer` | **Systematic phase 5** of the project workflow (framework 12) - before push/merge |
+| "Find use cases", "where can AI help us", "prioritize these ideas", "I don't know what to build" | skill `/use-cases` (frame 18, step 0) | BEFORE any `/new-projet` when the project is not chosen yet |
 | "Is it really done", "verify the phase", "close the phase" | `verifier` | **MANDATORY** after code-reviewer, before a `ROADMAP.md` phase goes to `closed` |
 
 ### Typical invocation order for a new work item

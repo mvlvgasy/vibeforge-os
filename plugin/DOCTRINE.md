@@ -366,6 +366,8 @@ custom layer is never touched. `_method/` is regenerable; everything else is you
 
 **Artefacts** (`projets-meta/<project>/docs/`): `QUESTIONS.md` (unknowns register), `REQUIREMENTS.md`, `ROADMAP.md` (testable exit criterion per phase), `plans/PNN-MM.md` (one plan per session), `VALIDATIONS.md` (sign-off log). Generic supporting templates: `discovery-notes`, `stakeholder-map`, `ai-use-case-sheet`.
 
+**Step 0**: `/use-cases` detects and prioritizes use cases before any project (pain-point interviews, UC sheets, value / feasibility / risk / effort grid, validated top 3, launch as a project).
+
 **Rules**: "one round = the whole frontier" questions with one recommendation each, never ask for a findable fact; `/cloture-cadrage` blocks on an open blocking question; rigor profiles `leger` / `standard` / `complet` (never full by default); judge distinct from author (new `verifier` agent); one next step.
 
 **Details**: `doctrine/18-traceable-scoping.md`
