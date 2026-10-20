@@ -20,6 +20,7 @@ param(
     [string]$BaseDir = "",
     [switch]$GitInit,
     [string]$GithubRepo = "",
+    [ValidateSet("leger","standard","complet")][string]$Profil = "standard",
     [switch]$DryRun
 )
 
@@ -111,6 +112,7 @@ $variables = @{
     "{{PROJET_NAME}}"             = $Name
     "{{PROJET_CREATED}}"          = $today
     "{{LAB_NAME}}"                = $AffiliatedLab
+    "{{PROFIL}}"                  = $Profil
     "{{LAB_CATEGORY}}"            = $category
     "{{LAB_PATH_RELATIVE}}"       = "../.."
     "{{VIBEFORGE_PATH_RELATIVE}}" = $pluginRootRef

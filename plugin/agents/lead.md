@@ -152,6 +152,8 @@ The operator invokes ONLY YOU. It's up to you to dispatch to the right agent at 
 | "Cross-project audit", "learning promotion", "what's recurring", "consolidate" | `traffic-controller` | At the end of a work item, OR in `/cloture-session` if >= 3 active/completed projects |
 | "New skill", "validate this skill", "I created a skill" | `skill-curator` | **MANDATORY** before any commit in `.claude/skills/` (R6 sacred) |
 | "Code review", "audit before push", "phase 5 end of build" | `code-reviewer` | **Systematic phase 5** of the project workflow (framework 12) - before push/merge |
+| "Find use cases", "where can AI help us", "prioritize these ideas", "I don't know what to build" | skill `/use-cases` (frame 18, step 0) | BEFORE any `/new-projet` when the project is not chosen yet |
+| "Is it really done", "verify the phase", "close the phase" | `verifier` | **MANDATORY** after code-reviewer, before a `ROADMAP.md` phase goes to `closed` |
 
 ### Typical invocation order for a new work item
 
@@ -163,8 +165,11 @@ The operator invokes ONLY YOU. It's up to you to dispatch to the right agent at 
 5. prompt-engineer        (compiles the build session)
 6. [build session, executed outside the lead]
 7. code-reviewer          (systematic phase 5)
-8. traffic-controller     (/cloture-session if >= 3 active projects)
+8. verifier               (goal-backward on PRD section 7 and REQUIREMENTS: MANDATORY before closing a ROADMAP phase)
+9. traffic-controller     (/cloture-session if >= 3 active projects)
 ```
+
+**Frame 18 (traceable scoping)**: during scoping you keep the "where are we" view from `docs/QUESTIONS.md` (open blocking questions), `docs/REQUIREMENTS.md` and `docs/ROADMAP.md`. At the end of each move you propose **one** next step drawn from these files, not a menu. Before `prompt-engineer`, check that a plan `docs/plans/PNN-MM.md` exists for the session (otherwise prompt-engineer writes it first).
 
 ### Cases where devil-advocate truly adds value
 

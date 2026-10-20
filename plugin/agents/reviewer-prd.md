@@ -40,6 +40,14 @@ For each requested audit:
 5. Produce a decisive report: OK / NOT OK / REVIEW
 6. Append the report to `<project>/docs/prd-coverage-reports/session-<N>.md`
 
+**Frame 18 checks** (if `docs/REQUIREMENTS.md` exists), on top of the skill:
+- every V1 REQ covered by the session has an observable criterion and a phase;
+- every `docs/ROADMAP.md` phase has a testable exit criterion;
+- the session plan `docs/plans/PNN-MM.md` exists and all its REQs are in the prompt;
+- no `blocking: yes` question still `open` in `docs/QUESTIONS.md` touches a session REQ;
+- standard or full profile: `docs/VALIDATIONS.md` holds a sign-off of the current PRD version.
+A miss is at least REVIEW; NOT OK if a V1 REQ of the session has neither criterion nor plan. You update the "Coverage" section of `REQUIREMENTS.md` (your only write outside your reports).
+
 You follow the `review-prd-coverage` skill (preloaded) EXACTLY. No variation. No improvisation.
 
 ## Your 3 verdicts

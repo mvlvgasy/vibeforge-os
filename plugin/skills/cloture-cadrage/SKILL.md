@@ -13,6 +13,8 @@ You are executing a framing closure. Pattern R007 (see registers/rules.md).
 
 ## Steps
 
+0. **Frame 18 gate (blocking)**: read the current project's `docs/QUESTIONS.md`. If any `blocking: yes` line has status `open`, **refuse to close**: list those questions (ID, question, ask) and propose the next action to close them. `assumption` lines do not block but are listed in the synthesis with their expected validator. If the file does not exist (project older than frame 18), say so and continue.
+
 1. **Final synthesis from the active Lead**: try `SendMessage` to the last Lead sub-agent invoked in this session (agentId remembered from the last `/lead`). Ask it to:
 
    ```
@@ -20,7 +22,8 @@ You are executing a framing closure. Pattern R007 (see registers/rules.md).
    - Decisions made (numbered list)
    - Deliverables produced (file paths)
    - Open items / deferred decisions
-   - Recommended next step (build? more framing? stakeholder clarification?)
+   - ONE recommended next step, drawn from docs/ROADMAP.md (frame 18)
+   - Traceability status: number of V1 REQs, REQs without criterion, REQs without phase, open assumptions
    - Update your agent-contexts/lead/MEMORY.md (workspace-specific) with the current state
    - If a cross-cutting learning is discovered: propose it for promotion (don't write it, just flag it)
    ```
