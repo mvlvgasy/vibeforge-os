@@ -1,4 +1,4 @@
-# Vibeforge Doctrine — The 16 fundamental frames
+# Vibeforge Doctrine — The fundamental frames (01 to 16, plus 18)
 
 > Operational synthesis. For the detail of each frame, see `doctrine/01-...md`
 > through `doctrine/16-...md`.
@@ -359,6 +359,16 @@ custom layer is never touched. `_method/` is regenerable; everything else is you
 **Engine**: `/new-lab-standalone` + `scripts/new-lab-standalone.ps1` (deterministic).
 
 **Detail**: `doctrine/16-labs-independants.md`
+
+## Frame 18 — Traceable scoping
+
+**Definition**: a backbone of IDs links every scoping question to the final proof: `Q-xx → decision → REQ-xx → criterion (PRD section 7) → phase / plan → verifier proof`. Concepts imported from VibeFlow, no GSD dependency. Numbered 18 to stay aligned with the source method (frame 17, enforcement, is not ported yet).
+
+**Artefacts** (`projets-meta/<project>/docs/`): `QUESTIONS.md` (unknowns register), `REQUIREMENTS.md`, `ROADMAP.md` (testable exit criterion per phase), `plans/PNN-MM.md` (one plan per session), `VALIDATIONS.md` (sign-off log). Generic supporting templates: `discovery-notes`, `stakeholder-map`, `ai-use-case-sheet`.
+
+**Rules**: "one round = the whole frontier" questions with one recommendation each, never ask for a findable fact; `/cloture-cadrage` blocks on an open blocking question; rigor profiles `leger` / `standard` / `complet` (never full by default); judge distinct from author (new `verifier` agent); one next step.
+
+**Details**: `doctrine/18-traceable-scoping.md`
 
 ## Synthesis
 

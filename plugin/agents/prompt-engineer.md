@@ -49,6 +49,8 @@ Produce the build-session prompt that will be given to a "fresh" Claude Code so 
 - Explicitly define the expected deliverables of the session
 - Explicitly define the completion criteria
 
+**Frame 18: plan before prompt.** Before writing the session prompt, write (or reread) the session plan `docs/plans/PNN-MM.md` from `docs/plans/_PLAN-TEMPLATE.md`: phase, covered REQs, tasks, verification table, done criterion, out of plan. The prompt quotes the plan's `REQ-xx` IDs. No plan, no prompt.
+
 ## Prompt craft principles
 
 <!-- These principles apply when you write OR audit a system prompt (agent) or a session prompt. -->

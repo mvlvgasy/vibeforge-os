@@ -1,7 +1,8 @@
 # PRD — {{PROJET_NAME}}
 
 > Product Requirements Document. To fill in via `/business-analyst` during the discovery session.
-> Format: 10 mandatory sections.
+> Format: 10 mandatory sections. Frame 18: detailed requirements live in `REQUIREMENTS.md` (`REQ-xx`), questions in `QUESTIONS.md`, phases in `ROADMAP.md`, sign-offs in `VALIDATIONS.md`.
+> Version: v0.1 (to be validated).
 
 ## 1. What
 TBD
@@ -13,7 +14,10 @@ TBD
 TBD
 
 ## 4. V1 scope
-- [ ] TBD
+
+> One line per requirement, with its ID. Details (source, criterion, phase) live in `REQUIREMENTS.md`.
+
+- REQ-01: TBD
 
 ## 5. Out of V1 scope
 - TBD
@@ -25,8 +29,20 @@ TBD
 | Business validator | TBD | TBD |
 | Target users | TBD | TBD |
 
-## 7. Success criteria
-- TBD
+## 7. Success criteria (observable)
+
+> Format: "The user can ..." / "Command X returns Y". Each criterion quotes its REQ. Consumed by `verifier` after each build.
+
+- [ ] (REQ-01) TBD
+
+### must_haves
+
+```yaml
+must_haves:
+  truths: []
+  artifacts: []
+  key_links: []
+```
 
 ## 8. Constraints
 - **Technical**: TBD
