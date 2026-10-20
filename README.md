@@ -11,7 +11,7 @@ on the machine that uses it. Hand the folder to anyone.
 
 [![Version](https://img.shields.io/badge/version-0.4.1-2563eb)](./plugin/.claude-plugin/plugin.json)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-d97757)](https://docs.claude.com/en/docs/claude-code)
-[![Doctrine](https://img.shields.io/badge/doctrine-16%20frameworks-16a34a)](#-the-doctrine)
+[![Doctrine](https://img.shields.io/badge/doctrine-17%20frameworks-16a34a)](#-the-doctrine)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%2F%20PowerShell-5b8def)](#-platform)
 [![License](https://img.shields.io/badge/license-source--available-64748b)](./LICENSE)
 
@@ -23,7 +23,7 @@ on the machine that uses it. Hand the folder to anyone.
 
 ## ✨ What it is
 
-Vibeforge is a **lab generator** built on Claude Code. This repo holds the method — 16
+Vibeforge is a **lab generator** built on Claude Code. This repo holds the method — 17
 doctrine frames, armed agents, skills, templates. You use it once per domain: it interviews
 you, then **stamps a standalone lab** that embeds a frozen copy of that method (`_method/`
 socle + vendored agents + skills). From that point on, the lab is self-sufficient.
@@ -108,7 +108,7 @@ What ships inside every generated lab (the full governance cycle, not just docum
 
 | Layer | What the lab gets |
 |-------|-------------------|
-| **Doctrine** | The 16 frames, frozen in `_method/` with a `VERSION` stamp |
+| **Doctrine** | The 17 frames (01–16 + 18), frozen in `_method/` with a `VERSION` stamp |
 | **Agents** | The whole fleet — orchestration (lead), framing (business-analyst, architecte, ux), quality (reviewer-prd, code-reviewer, devil-advocate), memory (dream-validator), curation (skill-curator, traffic-controller) — plus your custom experts |
 | **Skills** | ~35 including the capitalization loop: `/cloture-session`, `/save-cadrage`, `/dream`, `/promote-learning`, `/promote-decision-to-bdr`, `/metrics-report` |
 | **Hooks** | 8 lifecycle guards wired via `.claude/settings.json` — completion verification, anti-runaway, memory nudges, pre-compact protection |
@@ -140,7 +140,7 @@ A single Claude Code plugin, organized as:
 
 | Folder | What it holds |
 |--------|---------------|
-| **`doctrine/`** | 16 numbered frameworks — the constitution of the method (see below). |
+| **`doctrine/`** | 17 numbered frameworks (01–16 + 18) — the constitution of the method (see below). |
 | **`agents/`** | "Armed" `.md` agents (tools, model, memory, hooks declared in frontmatter) + lightweight `_workers/` for parallel fan-out. |
 | **`agent-contexts/`** | Per-agent `SOUL` / `MEMORY` / `USER` split — each specialist keeps its own persistent context and learnings. |
 | **`skills/`** | ~30 slash skills (`/lead`, `/new-lab`, `/cloture-session`, `/dream`, `/save-cadrage`…). |
@@ -152,7 +152,7 @@ A single Claude Code plugin, organized as:
 
 ## 🧭 The doctrine
 
-The backbone is **16 frameworks**, each a single numbered file in `doctrine/`:
+The backbone is **17 frameworks** (numbered 01–16 and 18; 17 is reserved, not ported yet), each a single numbered file in `doctrine/`:
 
 | # | Framework | # | Framework |
 |---|-----------|---|-----------|
@@ -164,10 +164,11 @@ The backbone is **16 frameworks**, each a single numbered file in `doctrine/`:
 | 06 | Rules | 14 | Architecture de livraison agent |
 | 07 | Capitalisation | 15 | Bounded autonomous execution |
 | 08 | Transposition (any domain) | 16 | **Standalone labs (the generator model)** |
+|    |  | 18 | Traceable scoping |
 
-Frameworks 01–08 are the methodological core; 09–16 add cross-lab governance, credential hygiene,
+Frameworks 01–08 are the methodological core; 09–16 and 18 add cross-lab governance, credential hygiene,
 a clean project workflow, scoped agent memory, delivery patterns, bounded autonomy (HALT codes),
-and the standalone-lab generation model that makes the whole method **distributable**.
+the standalone-lab generation model, and traceable scoping (frame 18) that makes the whole method **distributable**.
 
 ---
 

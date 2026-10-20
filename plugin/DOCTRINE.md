@@ -383,7 +383,7 @@ workflow). The extensions (13-16) add **automatic MEMORY consolidation** (Memory
 scoping), **explicit framing of the delivery architecture** (Agent delivery
 architecture), **bounded autonomous execution** (HALT conditions), and **standalone
 lab generation** (frozen socle, zero-dependency labs you can hand to anyone). Together,
-the **16 frames** make Vibeforge an **organic meta-method** ready for real production —
+the **17 frames** make Vibeforge an **organic meta-method** ready for real production —
 and **distributable**.
 
 ## Operational instrumentation layers
